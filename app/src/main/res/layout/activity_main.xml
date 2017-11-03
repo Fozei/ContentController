@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ewedo.contentcontroller.MainActivity">
+
+    <Button
+        android:id="@+id/bt_start"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="Start Server" />
+
+    <Button
+        android:id="@+id/bt_change"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/bt_start"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Change Content" />
+
+    <Button
+        android:id="@+id/bt_quit"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/bt_change"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Stop Content" />
+
+    <Button
+        android:id="@+id/bt_stop_server"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/bt_quit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Stop Server" />
+
+
+</RelativeLayout>
