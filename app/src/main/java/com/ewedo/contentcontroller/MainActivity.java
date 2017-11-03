@@ -1,5 +1,6 @@
 package com.ewedo.contentcontroller;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.server.SimpleServer;
 import com.ewedo.contentcontroller.server.Util;
+import com.ewedo.contentcontroller.service.PostexecuteService;
 
 import java.io.IOException;
 
@@ -75,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 server.stop();
             }
         });
+
+        Intent intent = new Intent(this, PostexecuteService.class);
+        startService(intent);
     }
 
 }
