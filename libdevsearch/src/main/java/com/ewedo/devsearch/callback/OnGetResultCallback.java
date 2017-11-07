@@ -9,7 +9,7 @@ import java.util.List;
 public interface OnGetResultCallback {
     void onGetResult(List<String> list);
 
-    void onError();
+    void onError(Exception e);
 
-    void processFinish(int i);
+    void onProcessChange(int i);
 }

@@ -33,14 +33,15 @@ public class SecondActivity extends Activity {
             }
 
             @Override
-            public void onError() {
-                Log.i("***", "SecondActivity.onError: ");
+            public void onError(Exception e) {
+                e.printStackTrace();
+                Log.i("***", "SecondActivity.onError: " + e.getMessage());
             }
 
             @Override
-            public void processFinish(int i) {
+            public void onProcessChange(int i) {
                 index++;
-                Log.i("***", "SecondActivity.processFinish: " + index);
+                Log.i("***", "SecondActivity.onProcessChange: " + index);
             }
         });
 

@@ -48,8 +48,8 @@ public class ScanPortsAsyncTask extends AsyncTask<Object, Void, Void> {
                 InetAddress address = InetAddress.getByName(ip);
                 ip = address.getHostAddress();
             } catch (UnknownHostException e) {
-//                activity.processFinish(false);
-//                activity.processFinish(e);
+//                activity.onProcessChange(false);
+//                activity.onProcessChange(e);
 
                 return null;
             }
@@ -80,9 +80,9 @@ public class ScanPortsAsyncTask extends AsyncTask<Object, Void, Void> {
                 executor.awaitTermination(5, TimeUnit.MINUTES);
                 executor.shutdownNow();
             } catch (InterruptedException e) {
-//                activity.processFinish(e);
+//                activity.onProcessChange(e);
             }
-//            activity.processFinish(true);
+//            activity.onProcessChange(true);
         }
 
         return null;

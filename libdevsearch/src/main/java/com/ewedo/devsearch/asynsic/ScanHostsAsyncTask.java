@@ -9,6 +9,7 @@ import com.ewedo.devsearch.runnable.ScanHostsRunnable;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -53,7 +54,7 @@ public class ScanHostsAsyncTask extends AsyncTask<Integer, Void, Void> {
         OnGetResultCallback callback = delegate.get();
         File file = new File(ARP_TABLE);
         if (!file.exists() || !file.canRead()) {
-            callback.onError();
+            callback.onError(new FileNotFoundException());
             return null;
         }
 
@@ -82,7 +83,7 @@ public class ScanHostsAsyncTask extends AsyncTask<Integer, Void, Void> {
             executor.awaitTermination(5, TimeUnit.MINUTES);
             executor.shutdownNow();
         } catch (InterruptedException e) {
-            callback.onError();
+            callback.onError(e);
             return null;
         }
 
@@ -105,13 +106,13 @@ public class ScanHostsAsyncTask extends AsyncTask<Integer, Void, Void> {
         BufferedReader reader = null;
         OnGetResultCallback callback = delegate.get();
         ExecutorService executor = Executors.newCachedThreadPool();
-
+        final List<String> result = new ArrayList<>();
         try {
             reader = new BufferedReader(new FileReader(ARP_TABLE));
             reader.readLine(); // Skip header.
             String line;
 
-            final List<String> result = new ArrayList<>();
+
 
             while ((line = reader.readLine()) != null) {
                 String[] arpLine = line.split("\\s+");
@@ -136,7 +137,7 @@ public class ScanHostsAsyncTask extends AsyncTask<Integer, Void, Void> {
                                     result.add(hostname);
                                 }
                             } catch (UnknownHostException e) {
-                                callback1.onError();
+                                callback1.onError(e);
                                 return;
                             }
                         }
@@ -145,13 +146,13 @@ public class ScanHostsAsyncTask extends AsyncTask<Integer, Void, Void> {
             }
         } catch (IOException e) {
             if (callback != null) {
-                callback.onError();
+                callback.onError(e);
             }
 
         } finally {
             executor.shutdown();
             if (callback != null) {
-                callback.onError();
+                callback.onGetResult(result);
             }
 
             try {

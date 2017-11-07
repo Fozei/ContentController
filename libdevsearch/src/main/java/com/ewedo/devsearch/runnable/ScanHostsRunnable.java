@@ -61,7 +61,7 @@ public class ScanHostsRunnable implements Runnable {
 
                 OnGetResultCallback activity = delegate.get();
                 if (activity != null) {
-                    activity.processFinish(1);
+                    activity.onProcessChange(1);
                 }
             }
         }

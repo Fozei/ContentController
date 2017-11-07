@@ -58,10 +58,10 @@ public class ScanPortsRunnable implements Runnable {
                 socket.setTcpNoDelay(true);
                 socket.connect(new InetSocketAddress(ip, i), timeout);
             } catch (IllegalBlockingModeException | IllegalArgumentException e) {
-//                activity.processFinish(e);
+//                activity.onProcessChange(e);
                 continue;
             } catch (IOException e) {
-//                activity.processFinish(1);
+//                activity.onProcessChange(1);
                 continue; // Connection failures mean that the port isn't open.
             }
 
@@ -76,11 +76,11 @@ public class ScanPortsRunnable implements Runnable {
                     data = parseHTTP(in, out);
                 }
             } catch (IOException e) {
-//                activity.processFinish(e);
+//                activity.onProcessChange(e);
             } finally {
                 portData.put(i, data);
-//                activity.processFinish(portData);
-//                activity.processFinish(1);
+//                activity.onProcessChange(portData);
+//                activity.onProcessChange(1);
                 try {
                     socket.close();
                 } catch (IOException ignored) {
