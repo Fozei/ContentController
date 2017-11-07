@@ -3,8 +3,8 @@
     package="com.ewedo.contentcontroller">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +21,13 @@
             </intent-filter>
         </activity>
         <service android:name=".service.PostexecuteService" />
+
+        <activity android:name=".SecondActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.ewedo.action.DEVSEARCH" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
