@@ -31,6 +31,7 @@ public class ScanHostsRunnable implements Runnable {
      */
     public ScanHostsRunnable(int start, int stop, int timeout, WeakReference<OnGetResultCallback> delegate) {
         Log.i("***", "ScanHostsRunnable() called with: start = [" + start + "], stop = [" + stop + "], timeout = [" + timeout + "], delegate = [" + delegate + "]");
+        Log.i("***", "ScanHostsRunnable.ScanHostsRunnable: " + (stop - start + 1));
         this.start = start;
         this.stop = stop;
         this.timeout = timeout;

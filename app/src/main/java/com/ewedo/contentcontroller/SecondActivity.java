@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
 import static com.ewedo.contentcontroller.Constants.RESUME;
@@ -25,7 +26,7 @@ import static com.ewedo.contentcontroller.Constants.RESUME;
 
 public class SecondActivity extends Activity {
     public static String TAG = "***";
-    private int index;
+    private AtomicInteger index;
     private List<String> macList;
     private List<String> targetIpList;
     private DeviceScanner mScanner;
@@ -44,13 +45,15 @@ public class SecondActivity extends Activity {
         initView();
         initMacList();
 
+        index = new AtomicInteger(0);
+
         mScanner = new DeviceScanner(this, new OnGetResultCallback() {
             @Override
             public void onGetResult(List<String> list) {
                 if (list != null) {
                     targetIpList = list;
                     showDoneUi();
-                    tvInfo.setText(String.format("检查了%d个地址，\n应该发现%d台设备，\n实际发现%d台设备。", index, macList.size(), list.size()));
+                    tvInfo.setText(String.format("检查了%d个地址，\n应该发现%d台设备，\n实际发现%d台设备。", index.get(), macList.size(), list.size()));
                     tvCurrent.setText("");
                 }
             }
@@ -63,7 +66,7 @@ public class SecondActivity extends Activity {
 
             @Override
             public void onProcessChange(int i) {
-                index++;
+                index.getAndIncrement();
             }
         }, macList);
 
@@ -81,6 +84,12 @@ public class SecondActivity extends Activity {
         macList.add("50:9a:4c:26:0f:fe");
         //中兴白色手机
         macList.add("6c:8b:2f:f0:02:b6");
+        //财务室旁机器
+        macList.add("e0:b9:4d:f9:0e:da");
+        //前台机器
+        macList.add("e0:b9:4d:f8:ac:48");
+        //前台壁挂
+        macList.add("ec:3d:fd:05:90:64");
     }
 
     private void initView() {
@@ -136,7 +145,7 @@ public class SecondActivity extends Activity {
         btResearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                index = 0;
+                index = new AtomicInteger();
                 showLoadingUi();
                 mScanner.start();
             }
