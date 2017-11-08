@@ -12,11 +12,12 @@ import com.ewedo.contentcontroller.server.Util;
 
 import java.io.IOException;
 
+import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
+import static com.ewedo.contentcontroller.Constants.STANDBY;
+import static com.ewedo.contentcontroller.Constants.STOP_PLAY;
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final int STANDBY = 1;
-    private static final int CHANGE_CONTENT = 2;
-    private static final int STOP_PLAY = 3;
     private SimpleServer server;
 
     @Override

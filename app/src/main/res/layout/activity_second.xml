@@ -4,11 +4,22 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/bt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="send msg"
+        android:id="@+id/bt_change_second"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:text="Change Content"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bt_resume_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/bt_change_second"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Resume Content"
         android:visibility="invisible" />
 
 </RelativeLayout>
