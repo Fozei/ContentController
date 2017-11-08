@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.devsearch.DeviceScanner;
@@ -16,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
-import static com.ewedo.contentcontroller.Constants.STANDBY;
+import static com.ewedo.contentcontroller.Constants.RESUME;
 
 /**
  * Created by fozei on 17-11-7.
@@ -30,6 +31,10 @@ public class SecondActivity extends Activity {
     private DeviceScanner mScanner;
     private View btChangeContent;
     private View btResume;
+    private TextView tvInfo;
+    private View loadingView;
+    private View btResearch;
+    private TextView tvCurrent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,24 +42,16 @@ public class SecondActivity extends Activity {
 
         setContentView(R.layout.activity_second);
         initView();
-
-        macList = new ArrayList<>();
-        //广告机
-        macList.add("f2:61:e6:17:6c:61");
-        //台式机
-        macList.add("50:9a:4c:26:0f:fe");
-        //中兴白色手机
-        macList.add("6c:8b:2f:f0:02:b6");
+        initMacList();
 
         mScanner = new DeviceScanner(this, new OnGetResultCallback() {
             @Override
             public void onGetResult(List<String> list) {
                 if (list != null) {
-                    Log.i("***", "SecondActivity.onGetResult: " + index + "::" + list.size() + ":::" + list.get(0));
-                    Log.i("***", "SecondActivity.onGetResult: " + list);
                     targetIpList = list;
-                    btChangeContent.setVisibility(View.VISIBLE);
-                    btResume.setVisibility(View.VISIBLE);
+                    showDoneUi();
+                    tvInfo.setText(String.format("检查了%d个地址，\n应该发现%d台设备，\n实际发现%d台设备。", index, macList.size(), list.size()));
+                    tvCurrent.setText("");
                 }
             }
 
@@ -71,9 +68,26 @@ public class SecondActivity extends Activity {
         }, macList);
 
 
+        mScanner.start();
+
+
+    }
+
+    private void initMacList() {
+        macList = new ArrayList<>();
+        //广告机
+        macList.add("f2:61:e6:17:6c:61");
+        //台式机
+        macList.add("50:9a:4c:26:0f:fe");
+        //中兴白色手机
+        macList.add("6c:8b:2f:f0:02:b6");
     }
 
     private void initView() {
+        tvInfo = findViewById(R.id.tv_info);
+        tvCurrent = findViewById(R.id.tv_current_state);
+        loadingView = findViewById(R.id.loadingView);
+
         btChangeContent = findViewById(R.id.bt_change_second);
         btChangeContent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +106,8 @@ public class SecondActivity extends Activity {
                     SocketRunnable runnable = new SocketRunnable(targetIpList.get(i), response);
                     executorService.execute(runnable);
                 }
+
+                tvCurrent.setText("当前为定制节目");
             }
         });
 
@@ -108,11 +124,40 @@ public class SecondActivity extends Activity {
                     SimpleResponse response = new SimpleResponse();
                     response.setMessage("OK");
                     response.setState(200);
-                    response.getOrder().setType(STANDBY);
+                    response.getOrder().setType(RESUME);
                     SocketRunnable runnable = new SocketRunnable(targetIpList.get(i), response);
                     executorService.execute(runnable);
                 }
+                tvCurrent.setText("当前为默认节目");
             }
         });
+
+        btResearch = findViewById(R.id.bt_research);
+        btResearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index = 0;
+                showLoadingUi();
+                mScanner.start();
+            }
+        });
+    }
+
+    private void showLoadingUi() {
+        loadingView.setVisibility(View.VISIBLE);
+        btChangeContent.setVisibility(View.INVISIBLE);
+        btResume.setVisibility(View.INVISIBLE);
+        btResearch.setVisibility(View.INVISIBLE);
+        tvInfo.setVisibility(View.INVISIBLE);
+        tvCurrent.setVisibility(View.INVISIBLE);
+    }
+
+    private void showDoneUi() {
+        loadingView.setVisibility(View.INVISIBLE);
+        btChangeContent.setVisibility(View.VISIBLE);
+        btResume.setVisibility(View.VISIBLE);
+        tvInfo.setVisibility(View.VISIBLE);
+        btResearch.setVisibility(View.VISIBLE);
+        tvCurrent.setVisibility(View.VISIBLE);
     }
 }

@@ -13,13 +13,18 @@ import java.util.List;
  */
 
 public class DeviceScanner {
+    private final Activity activity;
+    private final OnGetResultCallback callback;
+    private final List<String> macList;
     private Wireless wifi;
 
     public DeviceScanner(Activity activity, OnGetResultCallback onGetResultCallback, List<String> macList) {
-        init(activity, onGetResultCallback, macList);
+        this.activity = activity;
+        this.callback = onGetResultCallback;
+        this.macList = macList;
     }
 
-    private void init(Activity activity, OnGetResultCallback callback, List<String> macList) {
+    public void start() {
         try {
             wifi = new Wireless(activity.getApplicationContext());
             Integer ip = wifi.getInternalWifiIpAddress(Integer.class);

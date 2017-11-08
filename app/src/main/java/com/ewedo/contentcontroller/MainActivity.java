@@ -13,8 +13,8 @@ import com.ewedo.contentcontroller.server.Util;
 import java.io.IOException;
 
 import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
+import static com.ewedo.contentcontroller.Constants.RESUME;
 import static com.ewedo.contentcontroller.Constants.STANDBY;
-import static com.ewedo.contentcontroller.Constants.STOP_PLAY;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 SimpleResponse response = new SimpleResponse();
                 response.setMessage("OK");
                 response.setState(200);
-                response.getOrder().setType(STOP_PLAY);
+                response.getOrder().setType(RESUME);
                 server.setResponse(response);
             }
         });

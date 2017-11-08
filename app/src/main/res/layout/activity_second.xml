@@ -3,6 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_current_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_info"
+        android:textSize="14sp" />
+
     <Button
         android:id="@+id/bt_change_second"
         android:layout_width="150dp"
@@ -21,5 +34,21 @@
         android:layout_marginTop="25dp"
         android:text="Resume Content"
         android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bt_research"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/bt_resume_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Research"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
