@@ -33,6 +33,8 @@ package com.ewedo.libserver;
  * #L%
  */
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -612,6 +614,8 @@ public abstract class NanoHTTPD {
     public void start(final int timeout, boolean daemon) throws IOException {
         this.myServerSocket = this.getServerSocketFactory().create();
         this.myServerSocket.setReuseAddress(true);
+
+        Log.i("***", "NanoHTTPD.start: " + myServerSocket.hashCode());
 
         ServerRunnable serverRunnable = createServerRunnable(timeout);
         this.myThread = new Thread(serverRunnable);

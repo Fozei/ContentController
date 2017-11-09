@@ -1,81 +1,185 @@
 package com.ewedo.contentcontroller;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.ewedo.contentcontroller.bean.SimpleResponse;
-import com.ewedo.contentcontroller.server.SimpleServer;
-import com.ewedo.contentcontroller.server.Util;
+import com.ewedo.devsearch.DeviceScanner;
+import com.ewedo.devsearch.callback.OnGetResultCallback;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
 import static com.ewedo.contentcontroller.Constants.RESUME;
-import static com.ewedo.contentcontroller.Constants.STANDBY;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by fozei on 17-11-7.
+ */
 
-    private SimpleServer server;
+public class MainActivity extends Activity {
+    public static String TAG = "***";
+    private AtomicInteger index;
+    private List<String> macList;
+    private List<String> targetIpList;
+    private DeviceScanner mScanner;
+    private View btChangeContent;
+    private View btResume;
+    private TextView tvInfo;
+    private View loadingView;
+    private View btResearch;
+    private TextView tvCurrent;
+    private View btBackup;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.hide();
-        }
+        initView();
+        initMacList();
 
-        server = new SimpleServer(Util.getIp(this), 10000);
+        index = new AtomicInteger(0);
 
-        findViewById(R.id.bt_start).setOnClickListener(new View.OnClickListener() {
+        mScanner = new DeviceScanner(this, new OnGetResultCallback() {
+            @Override
+            public void onGetResult(List<String> list) {
+                if (list != null) {
+                    targetIpList = list;
+                    showDoneUi();
+                    tvInfo.setText(String.format("检查了%d个地址，\n应该发现%d台设备，\n实际发现%d台设备。", index.get(), macList.size(), list.size()));
+                    tvCurrent.setText("");
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+                Log.i("***", "MainActivity.onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onProcessChange(int i) {
+                index.getAndIncrement();
+            }
+        }, macList);
+
+
+        mScanner.start();
+
+
+    }
+
+    private void initMacList() {
+        macList = new ArrayList<>();
+        //广告机
+        macList.add("f2:61:e6:17:6c:61");
+        //台式机
+        macList.add("50:9a:4c:26:0f:fe");
+        //中兴白色手机
+        macList.add("6c:8b:2f:f0:02:b6");
+        //财务室旁机器
+        macList.add("e0:b9:4d:f9:0e:da");
+        //前台机器
+        macList.add("e0:b9:4d:f8:ac:48");
+        //前台壁挂
+        macList.add("ec:3d:fd:05:90:64");
+    }
+
+    private void initView() {
+        btBackup = findViewById(R.id.bt_backup);
+        btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+                Intent intent = new Intent(MainActivity.this, BackupActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tvInfo = findViewById(R.id.tv_info);
+        tvCurrent = findViewById(R.id.tv_current_state);
+        loadingView = findViewById(R.id.loadingView);
+
+        btChangeContent = findViewById(R.id.bt_change_second);
+        btChangeContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (targetIpList == null || targetIpList.size() <= 0) {
+                    return;
+                }
+
+                ExecutorService executorService = Executors.newCachedThreadPool();
+                for (int i = 0; i < targetIpList.size(); i++) {
                     SimpleResponse response = new SimpleResponse();
                     response.setMessage("OK");
                     response.setState(200);
-                    response.getOrder().setType(STANDBY);
-                    server.setResponse(response);
-                    server.start();
-                } catch (IOException e) {
-                    Toast.makeText(MainActivity.this, "开启失败！！！", Toast.LENGTH_SHORT);
-                    e.printStackTrace();
+                    response.getOrder().setType(CHANGE_CONTENT);
+                    SocketRunnable runnable = new SocketRunnable(targetIpList.get(i), response);
+                    executorService.execute(runnable);
                 }
+
+                tvCurrent.setText("当前为定制节目");
             }
         });
 
-        findViewById(R.id.bt_change).setOnClickListener(new View.OnClickListener() {
+        btResume = findViewById(R.id.bt_resume_content);
+        btResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleResponse response = new SimpleResponse();
-                response.setMessage("OK");
-                response.setState(200);
-                response.getOrder().setType(CHANGE_CONTENT);
-                server.setResponse(response);
+                if (targetIpList == null || targetIpList.size() <= 0) {
+                    return;
+                }
+
+                ExecutorService executorService = Executors.newCachedThreadPool();
+                for (int i = 0; i < targetIpList.size(); i++) {
+                    SimpleResponse response = new SimpleResponse();
+                    response.setMessage("OK");
+                    response.setState(200);
+                    response.getOrder().setType(RESUME);
+                    SocketRunnable runnable = new SocketRunnable(targetIpList.get(i), response);
+                    executorService.execute(runnable);
+                }
+                tvCurrent.setText("当前为默认节目");
             }
         });
 
-        findViewById(R.id.bt_quit).setOnClickListener(new View.OnClickListener() {
+        btResearch = findViewById(R.id.bt_research);
+        btResearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleResponse response = new SimpleResponse();
-                response.setMessage("OK");
-                response.setState(200);
-                response.getOrder().setType(RESUME);
-                server.setResponse(response);
-            }
-        });
-
-        findViewById(R.id.bt_stop_server).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                server.stop();
+                index = new AtomicInteger();
+                showLoadingUi();
+                mScanner.start();
             }
         });
     }
 
+    private void showLoadingUi() {
+        loadingView.setVisibility(View.VISIBLE);
+        btChangeContent.setVisibility(View.INVISIBLE);
+        btResume.setVisibility(View.INVISIBLE);
+        btResearch.setVisibility(View.INVISIBLE);
+        tvInfo.setVisibility(View.INVISIBLE);
+        tvCurrent.setVisibility(View.INVISIBLE);
+        btBackup.setVisibility(View.INVISIBLE);
+    }
+
+    private void showDoneUi() {
+        loadingView.setVisibility(View.INVISIBLE);
+        btChangeContent.setVisibility(View.VISIBLE);
+        btResume.setVisibility(View.VISIBLE);
+        tvInfo.setVisibility(View.VISIBLE);
+        btResearch.setVisibility(View.VISIBLE);
+        tvCurrent.setVisibility(View.VISIBLE);
+        btBackup.setVisibility(View.VISIBLE);
+    }
 }

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SecondActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -26,7 +26,8 @@
         <service android:name=".service.PostexecuteService" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".BackupActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />

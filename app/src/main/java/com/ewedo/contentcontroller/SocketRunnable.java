@@ -33,7 +33,7 @@ public class SocketRunnable implements Runnable {
             outputStream.flush();
             socket.shutdownOutput();
         } catch (IOException e) {
-            Log.i("***", "SecondActivity.onClick: send immor error" + e.getMessage() + "\n" + targetIp);
+            Log.i("***", "MainActivity.onClick: send immor error" + e.getMessage() + "\n" + targetIp);
             e.printStackTrace();
         }
     }
