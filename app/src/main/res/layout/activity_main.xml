@@ -1,65 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
 
-    <TextView
-        android:id="@+id/tv_info"
+    <Button
+        android:id="@+id/test"
+        style="@style/button"
+        android:text="Mac Search" />
+
+    <Button
+        android:id="@+id/change_content"
+        style="@style/button"
+        android:layout_below="@id/test"
+        android:text="Start Show" />
+
+    <Button
+        android:id="@+id/show_sub_1"
+        style="@style/button"
+        android:layout_below="@id/change_content"
+        android:text="Show Sub 1" />
+
+
+    <Button
+        android:id="@+id/show_sub_2"
+        style="@style/button"
+        android:layout_below="@id/show_sub_1"
+        android:text="Show Sub 2" />
+
+    <Button
+        android:id="@+id/swap_card"
+        style="@style/button"
+        android:layout_below="@id/show_sub_2"
+        android:text="Swap Card" />
+
+
+    <Button
+        android:id="@+id/show_home_page"
+        style="@style/button"
+        android:layout_below="@id/swap_card"
+        android:text="Show Home Page" />
+
+    <Button
+        android:id="@+id/resume"
+        style="@style/button"
+        android:layout_below="@id/show_home_page"
+        android:text="Resume" />
+
+    <RelativeLayout
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center_horizontal"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_current_state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_info"
-        android:gravity="center_horizontal"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/bt_change_second"
-        android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:text="Change Content"
-        android:visibility="invisible" />
+        android:layout_alignParentBottom="true"
+        android:padding="5dp">
 
-    <Button
-        android:id="@+id/bt_resume_content"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/bt_change_second"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="Resume Content"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/tv_current_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/bt_research"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/bt_resume_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="Research"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/setting"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/setting"
+            android:gravity="center"
+            android:text="set"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
     <ProgressBar
-        android:id="@+id/loadingView"
+        android:id="@+id/progress"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_centerInParent="true" />
-
-    <Button
-        android:id="@+id/bt_backup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="back up"
+        android:layout_centerInParent="true"
         android:visibility="invisible" />
 
 </RelativeLayout>

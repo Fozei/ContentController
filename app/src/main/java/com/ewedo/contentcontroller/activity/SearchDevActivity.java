@@ -1,4 +1,4 @@
-package com.ewedo.contentcontroller;
+package com.ewedo.contentcontroller.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ewedo.contentcontroller.R;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
+import com.ewedo.contentcontroller.runnable.SocketRunnable;
 import com.ewedo.devsearch.DeviceScanner;
 import com.ewedo.devsearch.callback.OnGetResultCallback;
 
@@ -18,14 +20,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
 import static com.ewedo.contentcontroller.Constants.RESUME;
+import static com.ewedo.contentcontroller.Constants.SHOW_HOME_PAGE;
 
 /**
  * Created by fozei on 17-11-7.
  */
 
-public class MainActivity extends Activity {
+public class SearchDevActivity extends Activity {
     public static String TAG = "***";
     private AtomicInteger index;
     private List<String> macList;
@@ -43,7 +45,7 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_dev);
         initView();
         initMacList();
 
@@ -63,7 +65,7 @@ public class MainActivity extends Activity {
             @Override
             public void onError(Exception e) {
                 e.printStackTrace();
-                Log.i("***", "MainActivity.onError: " + e.getMessage());
+                Log.i("***", "SearchDevActivity.onError: " + e.getMessage());
             }
 
             @Override
@@ -80,7 +82,7 @@ public class MainActivity extends Activity {
 
     private void initMacList() {
         macList = new ArrayList<>();
-        //广告机
+        //壁挂开发机
         macList.add("f2:61:e6:17:6c:61");
         //台式机
         macList.add("50:9a:4c:26:0f:fe");
@@ -99,7 +101,7 @@ public class MainActivity extends Activity {
         btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BackupActivity.class);
+                Intent intent = new Intent(SearchDevActivity.this, BackupActivity.class);
                 startActivity(intent);
             }
         });
@@ -122,7 +124,7 @@ public class MainActivity extends Activity {
                     SimpleResponse response = new SimpleResponse();
                     response.setMessage("OK");
                     response.setState(200);
-                    response.getOrder().setType(CHANGE_CONTENT);
+                    response.getOrder().setType(SHOW_HOME_PAGE);
                     SocketRunnable runnable = new SocketRunnable(targetIpList.get(i), response);
                     executorService.execute(runnable);
                 }

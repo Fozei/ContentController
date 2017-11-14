@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ewedo.contentcontroller.BackupActivity">
+    tools:context="com.ewedo.contentcontroller.activity.BackupActivity">
 
     <TextView
         android:id="@+id/tv_info_board"

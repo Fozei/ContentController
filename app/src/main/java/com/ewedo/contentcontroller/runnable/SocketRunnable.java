@@ -1,4 +1,4 @@
-package com.ewedo.contentcontroller;
+package com.ewedo.contentcontroller.runnable;
 
 import android.util.Log;
 
@@ -33,7 +33,7 @@ public class SocketRunnable implements Runnable {
             outputStream.flush();
             socket.shutdownOutput();
         } catch (IOException e) {
-            Log.i("***", "MainActivity.onClick: send immor error" + e.getMessage() + "\n" + targetIp);
+            Log.i("***", "SearchDevActivity.onClick: send immor error" + e.getMessage() + "\n" + targetIp);
             e.printStackTrace();
         }
     }

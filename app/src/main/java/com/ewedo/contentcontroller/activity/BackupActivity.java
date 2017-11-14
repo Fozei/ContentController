@@ -1,4 +1,4 @@
-package com.ewedo.contentcontroller;
+package com.ewedo.contentcontroller.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,14 +8,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ewedo.contentcontroller.R;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.server.SimpleServer;
 import com.ewedo.contentcontroller.server.Util;
 
 import java.io.IOException;
 
-import static com.ewedo.contentcontroller.Constants.CHANGE_CONTENT;
 import static com.ewedo.contentcontroller.Constants.RESUME;
+import static com.ewedo.contentcontroller.Constants.SHOW_HOME_PAGE;
 import static com.ewedo.contentcontroller.Constants.STANDBY;
 
 public class BackupActivity extends AppCompatActivity {
@@ -71,7 +72,7 @@ public class BackupActivity extends AppCompatActivity {
                 SimpleResponse response = new SimpleResponse();
                 response.setMessage("OK");
                 response.setState(200);
-                response.getOrder().setType(CHANGE_CONTENT);
+                response.getOrder().setType(SHOW_HOME_PAGE);
                 server.setResponse(response);
                 tvCurrentContent.setText("已设置自定义节目");
             }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_current_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_info"
+        android:gravity="center_horizontal"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/bt_change_second"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="Change Content"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bt_resume_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/bt_change_second"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Resume Content"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bt_research"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/bt_resume_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="Research"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/bt_backup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="back up"
+        android:visibility="invisible" />
+
+</RelativeLayout>
