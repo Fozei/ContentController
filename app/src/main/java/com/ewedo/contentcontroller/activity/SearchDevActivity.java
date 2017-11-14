@@ -94,6 +94,8 @@ public class SearchDevActivity extends Activity {
         macList.add("e0:b9:4d:f8:ac:48");
         //前台壁挂
         macList.add("ec:3d:fd:05:90:64");
+        //运维广告机
+        macList.add("e0:b9:4b:fd:29:0a");
     }
 
     private void initView() {

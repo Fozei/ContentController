@@ -70,7 +70,10 @@ public class MainActivity extends Activity {
         macList = new ArrayList<>();
         //开发广告机
 //        macList.add("f2:61:e6:17:6c:61");
-        macList.add("50:9a:4c:26:0f:fe");
+        //运维办公室广告机
+        macList.add("e0:b9:4d:fd:29:0a");
+        //本机mac
+//        macList.add("50:9a:4c:26:0f:fe");
     }
 
     private void initView() {
@@ -93,6 +96,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onGetResult(final List<String> list) {
                         if (list.size() == 0) {
+                            searching = false;
                             Toast.makeText(MainActivity.this, "没有搜索到设备", Toast.LENGTH_SHORT).show();
                             controlLoadingView(View.INVISIBLE);
                             return;
