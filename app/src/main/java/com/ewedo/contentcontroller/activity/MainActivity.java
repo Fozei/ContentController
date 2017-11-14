@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ewedo.contentcontroller.R;
+import com.ewedo.contentcontroller.Util;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.runnable.SocketRunnable;
 import com.ewedo.devsearch.DeviceScanner;
@@ -62,20 +63,21 @@ public class MainActivity extends Activity {
         initView();
         initData();
         threadPool = Executors.newCachedThreadPool();
-        try {
-            ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(10055);
-            while (true) {
-                Socket socket = serverSocket.accept();
-                InputStream inputStream = socket.getInputStream();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         new Thread() {
             @Override
             public void run() {
-                super.run();
+                try {
+                    ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(10055);
+                    while (true) {
+                        Log.i("***", "MainActivity.run: ");
+                        Socket socket = serverSocket.accept();
+                        InputStream inputStream = socket.getInputStream();
+                        String messageReceived = Util.convertIs2String(inputStream);
+                        Log.i("***", "MainActivity.onCreate: " + messageReceived);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }.start();
     }
