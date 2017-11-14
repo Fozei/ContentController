@@ -21,12 +21,18 @@ import com.ewedo.contentcontroller.runnable.SocketRunnable;
 import com.ewedo.devsearch.DeviceScanner;
 import com.ewedo.devsearch.callback.OnGetResultCallback;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ServerSocketFactory;
 
 import static com.ewedo.contentcontroller.Constants.JUMP_SUB_1;
 import static com.ewedo.contentcontroller.Constants.JUMP_SUB_2;
@@ -56,6 +62,22 @@ public class MainActivity extends Activity {
         initView();
         initData();
         threadPool = Executors.newCachedThreadPool();
+        try {
+            ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(10055);
+            while (true) {
+                Socket socket = serverSocket.accept();
+                InputStream inputStream = socket.getInputStream();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+            }
+        }.start();
     }
 
     private void initData() {
@@ -163,6 +185,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(START_SHOW);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -176,6 +199,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(JUMP_SUB_1);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -189,6 +213,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(JUMP_SUB_2);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -202,6 +227,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(SWAP_CARD);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -215,6 +241,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(SHOW_HOME_PAGE);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -228,6 +255,7 @@ public class MainActivity extends Activity {
                 response.getOrder().setType(RESUME);
                 SocketRunnable runnable = new SocketRunnable(currentIp, response);
                 threadPool.execute(runnable);
+                debug(response);
             }
         });
 
@@ -286,5 +314,10 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         threadPool.shutdown();
+    }
+
+    private void debug(SimpleResponse response) {
+        SocketRunnable runnable = new SocketRunnable("192.168.27.2", response);
+        threadPool.execute(runnable);
     }
 }
