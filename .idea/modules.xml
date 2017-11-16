@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/ContentController.iml" filepath="$PROJECT_DIR$/ContentController.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libdevsearch/libdevsearch.iml" filepath="$PROJECT_DIR$/libdevsearch/libdevsearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libserialhelper/libserialhelper.iml" filepath="$PROJECT_DIR$/libserialhelper/libserialhelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/libserver/libserver.iml" filepath="$PROJECT_DIR$/libserver/libserver.iml" />
     </modules>
   </component>
