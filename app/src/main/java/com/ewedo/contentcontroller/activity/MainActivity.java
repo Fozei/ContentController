@@ -16,25 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ewedo.contentcontroller.R;
-import com.ewedo.contentcontroller.Util;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.runnable.SocketRunnable;
 import com.ewedo.devsearch.DeviceScanner;
 import com.ewedo.devsearch.Wireless;
 import com.ewedo.devsearch.callback.OnGetResultCallback;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.net.ServerSocketFactory;
 
 import static com.ewedo.contentcontroller.Constants.JUMP_SUB_1;
 import static com.ewedo.contentcontroller.Constants.JUMP_SUB_2;
@@ -64,28 +57,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         initView();
         initData();
-        threadPool = Executors.newCachedThreadPool();
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(10055);
-                    while (true) {
-                        Log.i("***", "MainActivity.run: ");
-                        Socket socket = serverSocket.accept();
-                        InputStream inputStream = socket.getInputStream();
-                        String messageReceived = Util.convertIs2String(inputStream);
-                        Log.i("***", "MainActivity.onCreate: " + messageReceived);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
     }
 
     private void initData() {
         selfIp = Wireless.getInternalMobileIpAddress();
+        threadPool = Executors.newCachedThreadPool();
         sp = getSharedPreferences("ip", MODE_PRIVATE);
         currentIp = sp.getString("ip", "0.0.0.0");
         if (TextUtils.equals(currentIp, "0.0.0.0")) {
@@ -99,6 +75,7 @@ public class MainActivity extends Activity {
 //        macList.add("f2:61:e6:17:6c:61");
         //运维办公室广告机
 //        macList.add("e0:b9:4d:fd:29:0a");
+        //前台，演示用广告机
         macList.add("ec:3d:fd:05:90:64");
         //本机mac
 //        macList.add("50:9a:4c:26:0f:fe");
