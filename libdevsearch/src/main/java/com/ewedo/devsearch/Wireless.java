@@ -21,7 +21,7 @@ import java.util.Enumeration;
  * Created by fozei on 17-11-7.
  */
 
-class Wireless {
+public class Wireless {
     private Context context;
 
     /**

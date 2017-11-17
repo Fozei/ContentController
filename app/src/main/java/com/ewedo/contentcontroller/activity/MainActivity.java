@@ -20,6 +20,7 @@ import com.ewedo.contentcontroller.Util;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.runnable.SocketRunnable;
 import com.ewedo.devsearch.DeviceScanner;
+import com.ewedo.devsearch.Wireless;
 import com.ewedo.devsearch.callback.OnGetResultCallback;
 
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class MainActivity extends Activity {
     private ArrayList<String> macList;
     private View loading;
     private boolean searching;
+    private String selfIp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,19 +85,21 @@ public class MainActivity extends Activity {
     }
 
     private void initData() {
+        selfIp = Wireless.getInternalMobileIpAddress();
         sp = getSharedPreferences("ip", MODE_PRIVATE);
         currentIp = sp.getString("ip", "0.0.0.0");
         if (TextUtils.equals(currentIp, "0.0.0.0")) {
-            tvCurrentIp.setText("没有设置IP");
+            tvCurrentIp.setText(String.format("没有设置IP\n本机IP :%s", selfIp));
         } else {
-            tvCurrentIp.setText(currentIp);
+            tvCurrentIp.setText(String.format("目标IP :%s\n本机IP :%s", currentIp, selfIp));
         }
 
         macList = new ArrayList<>();
         //开发广告机
 //        macList.add("f2:61:e6:17:6c:61");
         //运维办公室广告机
-        macList.add("e0:b9:4d:fd:29:0a");
+//        macList.add("e0:b9:4d:fd:29:0a");
+        macList.add("ec:3d:fd:05:90:64");
         //本机mac
 //        macList.add("50:9a:4c:26:0f:fe");
     }
@@ -147,7 +151,7 @@ public class MainActivity extends Activity {
                                 edit.apply();
 
                                 currentIp = list.get(0);
-                                tvCurrentIp.setText(list.get(0));
+                                tvCurrentIp.setText(String.format("目标IP :%s\n本机IP :%s", list.get(0), selfIp));
                                 controlLoadingView(View.INVISIBLE);
                             }
                         });
@@ -284,8 +288,8 @@ public class MainActivity extends Activity {
                                 SharedPreferences.Editor edit = sp.edit();
                                 edit.putString("ip", desiredIp.trim());
                                 edit.apply();
-                                tvCurrentIp.setText(desiredIp.trim());
                                 currentIp = desiredIp.trim();
+                                tvCurrentIp.setText(String.format("目标IP :%s\n本机IP :%s", desiredIp.trim(), selfIp));
                             } else {
                                 Log.i("***", "MainActivity.onClick: not match");
                                 Toast.makeText(MainActivity.this, "输入的IP不合法", Toast.LENGTH_SHORT).show();
@@ -319,7 +323,7 @@ public class MainActivity extends Activity {
     }
 
     private void debug(SimpleResponse response) {
-        SocketRunnable runnable = new SocketRunnable("192.168.27.2", response);
-        threadPool.execute(runnable);
+//        SocketRunnable runnable = new SocketRunnable("192.168.27.2", response);
+//        threadPool.execute(runnable);
     }
 }
