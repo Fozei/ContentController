@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ewedo.commonlib.NetworkUtil;
 import com.ewedo.contentcontroller.R;
 import com.ewedo.contentcontroller.bean.SimpleResponse;
 import com.ewedo.contentcontroller.runnable.SocketRunnable;
@@ -22,6 +23,9 @@ import com.ewedo.devsearch.DeviceScanner;
 import com.ewedo.devsearch.Wireless;
 import com.ewedo.devsearch.callback.OnGetResultCallback;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -79,6 +83,32 @@ public class MainActivity extends Activity {
         macList.add("ec:3d:fd:05:90:64");
         //本机mac
 //        macList.add("50:9a:4c:26:0f:fe");
+
+        final InetAddress broadCastAddress = NetworkUtil.getBroadCastAddress();
+        Log.i("***", "MainActivity.initData: " + broadCastAddress);
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    //表示创建一个默认的套接字，并绑定到本地地址和一个随机的端口号
+                    DatagramSocket socket = new DatagramSocket(30008);
+                    socket.setReuseAddress(true);
+                    String msg = "hello server !";
+                    byte[] bytes = msg.getBytes();
+                    InetAddress byName = InetAddress.getByName("192.168.1.255");
+                    Log.i("***", "MainActivity.run: " + byName);
+                    //此处端口必须明确，是server监听"数据"的端口号
+                    DatagramPacket packet = new DatagramPacket(bytes, bytes.length, byName, 30008);
+                    socket.send(packet);
+                    Log.i("***", "MainActivity.run: send finish");
+                } catch (Exception e) {
+                    Log.i("***", "MainActivity.run: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 
     private void initView() {
@@ -283,14 +313,7 @@ public class MainActivity extends Activity {
     }
 
     private void controlLoadingView(int visibility) {
-        switch (visibility) {
-            case View.VISIBLE:
-                loading.setVisibility(visibility);
-                break;
-            case View.INVISIBLE:
-                loading.setVisibility(visibility);
-                break;
-        }
+        loading.setVisibility(visibility);
     }
 
     @Override
