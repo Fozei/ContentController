@@ -78,14 +78,19 @@ public class MainActivity extends Activity {
         //开发广告机
 //        macList.add("f2:61:e6:17:6c:61");
         //运维办公室广告机
-//        macList.add("e0:b9:4d:fd:29:0a");
+        macList.add("e0:b9:4d:fd:29:0a");
         //前台，演示用广告机
-        macList.add("ec:3d:fd:05:90:64");
+//        macList.add("ec:3d:fd:05:90:64");
         //本机mac
 //        macList.add("50:9a:4c:26:0f:fe");
 
+//        sendUdpMsg();
+
+    }
+
+    private void sendUdpMsg() {
         final InetAddress broadCastAddress = NetworkUtil.getBroadCastAddress();
-        Log.i("***", "MainActivity.initData: " + broadCastAddress);
+        Log.i("***", "the broad cast ip is : " + broadCastAddress);
 
         new Thread() {
             @Override
@@ -96,19 +101,28 @@ public class MainActivity extends Activity {
                     socket.setReuseAddress(true);
                     String msg = "hello server !";
                     byte[] bytes = msg.getBytes();
-                    InetAddress byName = InetAddress.getByName("192.168.1.255");
+                    InetAddress byName = InetAddress.getByName("192.168.1.45");
                     Log.i("***", "MainActivity.run: " + byName);
                     //此处端口必须明确，是server监听"数据"的端口号
                     DatagramPacket packet = new DatagramPacket(bytes, bytes.length, byName, 30008);
                     socket.send(packet);
                     Log.i("***", "MainActivity.run: send finish");
+
+                    byte[] buf = new byte[1024];
+                    DatagramPacket receivePacket = new DatagramPacket(buf, buf.length);
+                    while (true) {
+                        socket.receive(receivePacket);
+                        InetAddress address = receivePacket.getAddress();
+                        Log.i("***", "MainActivity.run: " + address);
+                        byte[] data = receivePacket.getData();
+                        Log.i("***", "MainActivity.run: " + new String(data));
+                    }
                 } catch (Exception e) {
                     Log.i("***", "MainActivity.run: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         }.start();
-
     }
 
     private void initView() {
