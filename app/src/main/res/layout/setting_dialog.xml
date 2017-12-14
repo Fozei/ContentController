@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_IP"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Set IP" />
+
+        <RadioButton
+            android:id="@+id/rv_MAC"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="Set MAC" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/et_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</LinearLayout>

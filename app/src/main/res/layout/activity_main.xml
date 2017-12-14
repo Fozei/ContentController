@@ -5,11 +5,17 @@
     android:background="@android:color/darker_gray">
 
     <RelativeLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="1. Specify the IP\n2. Specify MAC then search IP\n3. Get UDP feed back" />
+
         <Button
-            android:id="@+id/test"
+            android:id="@+id/search_devices"
             style="@style/button"
             android:layout_marginTop="100dp"
             android:text="Mac Search" />
@@ -17,7 +23,7 @@
         <Button
             android:id="@+id/change_content"
             style="@style/button"
-            android:layout_below="@id/test"
+            android:layout_below="@id/search_devices"
             android:text="Start Show" />
 
         <Button
@@ -53,6 +59,51 @@
             style="@style/button"
             android:layout_below="@id/show_home_page"
             android:text="Resume" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tool_bar"
+        android:layout_below="@id/main_container">
+
+        <Button
+            android:id="@+id/bt_check"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="UDP" />
+
+        <Switch
+            android:id="@+id/ss"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/bt_check"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/bt_check"
+            android:layout_toRightOf="@id/bt_check"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_notice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
     <RelativeLayout
