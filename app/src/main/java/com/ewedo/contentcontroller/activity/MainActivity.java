@@ -369,10 +369,10 @@ public class MainActivity extends Activity {
                                     Toast.makeText(MainActivity.this, "输入的MAC不合法", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
+                                String lowerCase = data.toLowerCase();
                                 StringBuilder sb = new StringBuilder();
                                 for (int i = 0; i < length; i = i + 2) {
-                                    String substring = data.substring(i, i + 2);
-                                    sb.append(substring);
+                                    sb.append(lowerCase.substring(i, i + 2));
                                     if (i < 10) {
                                         sb.append(":");
                                     }
